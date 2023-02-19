@@ -22,7 +22,7 @@ class Category(models.Model):
 
 
 class Users(models.Model):
-    login = models.CharField(max_length=100, unique=True)
+    login = models.CharField(max_length=50, unique=True)
     email = models.CharField(max_length=50, unique=True)
     address = models.CharField(max_length=150)
     avatar = models.IntegerField()
