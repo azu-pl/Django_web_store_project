@@ -41,8 +41,9 @@ class Subcategory(models.Model):
 
 
 def tb_media_path(instance, filename):
-    file_extension = filename[filename.find(".", -5, -1)::1]
-    return os.path.join("tb", "%i_%s%s" % (instance.id, instance.name, file_extension))
+    file_extension = filename[(filename.rfind(".", -5, -1))::1]
+    return os.path.join("tb", "%s%s" % (instance.name, file_extension)).lower()
+
 
 class Product(models.Model):
     name = models.CharField(max_length=50)
