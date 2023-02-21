@@ -5,13 +5,15 @@
     <title> {% block title %} Test title {% endblock %}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="{% static 'examples/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'store/style.css' %}">
 </head>
 
 <body>
   <div id="header"> <div id="logo"><strong>Django_web_store</strong></div></div>
   <div id="wrapper">
     <div id="main_content">
+        {% if user.is_authenticated %}{{ user.username }} <a href="{% url 'logout' %}">logout</a>
+        {% else %}<a href="{% url 'login' %}">login</a>{% endif %}
         {% block main_content %}
         <h1> Lorem ipsum dolr sit </h1>
         <h2>The standard Lorem Ipsum passage, used since the 1500s </h2>
