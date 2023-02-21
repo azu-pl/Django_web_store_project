@@ -3,12 +3,20 @@ from . import forms
 from django.contrib.auth import login, logout, authenticate
 
 
+def store(request):
+    context = {}
+    return render(request, 'store/store.html', context)
 
 
-# Create your views here.
+def cart(request):
+    context = {}
+    return render(request, 'store/cart.html', context)
 
-def home_view(request):
-    return render(request, 'store/base.html')
+
+def checkout(request):
+    context = {}
+    return render(request, 'store/checkout.html', context)
+
 
 def sign_up_view(request):
     if request.method == 'POST':
