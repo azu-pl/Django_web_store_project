@@ -1,6 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from . import forms
 from django.contrib.auth import login, logout, authenticate
+from store.models import Profile, Category
+from django.contrib.auth.models import User
 
 
 def store(request):
@@ -32,6 +34,9 @@ def sign_up_view(request):
     return render(request, 'registration/sign_up.html', {'form': form})
 
 def profile_view(request):
-    context = {}
+    # user = Profile.objects.get(phone_number='')
+    # print(user.name)
+    profile = get_object_or_404(Profile, id=1)
+    context = {'profile': profile}
     return render(request, 'store/profile.html', context)
 
