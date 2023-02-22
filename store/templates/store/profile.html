@@ -1,0 +1,15 @@
+{% extends 'store/base.html' %}
+{% block title %} Profil {{ user.username }} {% endblock %}
+{% block content %}
+<h1>Profil klienta: {{ user.username }}</h1>
+<div>
+  {{ user.first_name }}<br>
+  {{ user.last_name }}<br>
+  {{ user.email }}
+  <hr>
+</div>
+
+<div>
+  Adres:
+</div>
+{% endblock %}
