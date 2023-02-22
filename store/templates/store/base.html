@@ -28,8 +28,12 @@
 			</ul>
 
 			  <div class="form-inline my-2 my-lg-0">
-        {% if user.is_authenticated %}{{ user.username }} <a href="{% url 'logout' %}" class="btn btn-warning">Logout</a>
-        {% else %}<a href="{% url 'login' %}" class="btn btn-warning">Login</a>{% endif %}
+        		{% if user.is_authenticated %}
+				  <div class="welcome-msg">Witaj <a class="user-link" href="#">{{ user.username }}</a> !</div>
+				  <a href="{% url 'logout' %}" class="btn btn-warning">Logout</a>
+        		{% else %}
+				  <a href="{% url 'login' %}" class="btn btn-warning">Login</a>
+				{% endif %}
 	     	
 	     	<a href="#">
 	    		<img  id="cart-icon" src="{% static 'images/cart.png' %}">
