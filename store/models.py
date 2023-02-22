@@ -7,7 +7,12 @@ from django.db import models
 
 class Profile(models.Model):
     user = models.OneToOneField('auth.user', on_delete=models.CASCADE)
-    info = models.TextField()
+    street = models.CharField(max_length=50)
+    number = models.CharField(max_length=15)
+    post_code = models.CharField(max_length=6)
+    city = models.CharField(max_length=25)
+    phone_number = models.DecimalField(decimal_places=0, max_digits=9)
+    info = models.TextField(blank=True)
 
     class Meta:
         verbose_name = "Profil"
@@ -60,13 +65,4 @@ class Product(models.Model):
         verbose_name_plural = "Podukty"
 
 
-class User(models.Model):
-    login = models.CharField(max_length=50, unique=True)
-    email = models.CharField(max_length=50, unique=True)
-    address = models.CharField(max_length=150)
-    avatar = models.ImageField()
-    role = models.CharField(max_length=20)
-
-    def __str__(self):
-        pass
 
