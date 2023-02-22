@@ -30,3 +30,8 @@ def sign_up_view(request):
         form = forms.ResisterUserForm()
 
     return render(request, 'registration/sign_up.html', {'form': form})
+
+def profile_view(request):
+    context = {}
+    return render(request, 'store/profile.html', context)
+
