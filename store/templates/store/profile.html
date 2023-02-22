@@ -3,7 +3,7 @@
 {% block content %}
 <h1>Profil klienta: {{ user.username }}</h1>
 <div>
-  {{ user.id }}
+  Dane klienta:<br>
   {{ user.first_name }}<br>
   {{ user.last_name }}<br>
   {{ user.email }}
@@ -14,6 +14,10 @@
   Adres:<br>
   {{ profile.street }} {{ profile.number }}<br>
   {{ profile.post_code }} {{ profile.city }}<br>
-  tel: {{ profile.phone_number }}
+  tel: {{ profile.phone_number }}<br><br><hr>
 </div>
+<div>
+  Dodatkowe informacje:<br>
+  {{ profile.info }}
+</div><hr>
 {% endblock %}

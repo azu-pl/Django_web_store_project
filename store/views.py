@@ -34,9 +34,7 @@ def sign_up_view(request):
     return render(request, 'registration/sign_up.html', {'form': form})
 
 def profile_view(request):
-    # user = Profile.objects.get(phone_number='')
-    # print(user.name)
-    profile = get_object_or_404(Profile, id=1)
+    profile = get_object_or_404(Profile, user_id=request.user.pk)
     context = {'profile': profile}
     return render(request, 'store/profile.html', context)
 
