@@ -8,6 +8,11 @@ def store(request):
     return render(request, 'store/store.html', context)
 
 
+def store2(request):
+    context = {}
+    return render(request, 'store/store.html', context)
+
+
 def cart(request):
     context = {}
     return render(request, 'store/cart.html', context)
