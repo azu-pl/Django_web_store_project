@@ -1,0 +1,37 @@
+<!-- templatka robocza dla widoku listy products; views.py/products_list_view -->
+
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %} PRODUCTS OVERVIEW {% endblock %}
+
+{% block content %}
+{% if products.exists %}
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th><strong>Name</strong></th>
+            <th>Description</th>
+            <th><strong>price</strong></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for i in products %}
+    <tr>
+        <th><a href=""></a><img id="art-icon" src="{{i.thumbnail}}"></a></th>
+        <th>{{i.name}}</th>
+        <th>{{i.description}}</th>
+        <th>{{i.price}}</th>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<strong>There are no products - sorry</strong>
+{% endif %}
+{% endblock %}
+
+
+
+
