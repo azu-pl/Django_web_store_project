@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from . import forms
 from django.contrib.auth import login, logout, authenticate
-from store.models import Profile, Category
+from store.models import Profile, Category, Product
 from django.contrib.auth.models import User
 from store.forms import CreateUserProfileForm
 from django.views.generic import CreateView
@@ -18,6 +18,14 @@ def cart(request):
     context = {}
     return render(request, 'store/cart.html', context)
 
+def products_list_view(request):
+    products = Product.objects.all()
+    ctx = {'products':products}
+    return render(request, 'store/products_list1.html', ctx)
+
+
+def products_detail(request, id):
+    pass
 
 def checkout(request):
     context = {}
@@ -56,4 +64,8 @@ class ProfileCreateView(CreateView):
         # here we set default logged in user
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+
+
+
 
