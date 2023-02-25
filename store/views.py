@@ -10,8 +10,9 @@ from django.urls import reverse_lazy
 
 
 def store(request):
-    context = {}
-    return render(request, 'store/store.html', context)
+    products = Product.objects.all()
+    ctx = {'products': products}
+    return render(request, 'store/store.html', ctx)
 
 
 def cart(request):
@@ -21,11 +22,13 @@ def cart(request):
 def products_list_view(request):
     products = Product.objects.all()
     ctx = {'products':products}
-    return render(request, 'store/products_list1.html', ctx)
+    return render(request, 'store/products_list_1.html', ctx)
 
 
 def products_detail(request, id):
-    pass
+    product = get_object_or_404(Product, id=id)
+    ctx = {'product': product}
+    return render(request, 'store/products_detail.html', ctx)
 
 def checkout(request):
     context = {}

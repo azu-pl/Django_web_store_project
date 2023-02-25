@@ -1,45 +1,28 @@
 <!-- templatka robocza widoku listy w oparciu o store.html -->
 
-
-{% extends 'store/base.html' %}
 {% load static %}
 
-{% block title %} PRODUCTS OVERVIEW {% endblock %}
-
-{% block content %}
 {% if products.exists %}
-<div class="row">
-    <div>
-        <img class="thumbnail" src="{% static 'images/placeholder.png'%}">
-        <div class="box-element product">
-            <h6><strong>Product</strong></h6><br>
-            <p>Description</p>
-            <hr>
-            <button class="btn btn-outline-secondary add-btn">Add to Cart</button>
-            <a class="btn btn-outline-success" href="#">View</a>
-            <h4 style="display: inline-block;float: right">Price</h4>
-        </div>
-    </div>
-</div>
+
 {% for i in products %}
-<div class="row">
+
     <div>
-        <img class="thumbnail" src="{{i.thumbnail}}">
+        <img class="thumbnail" src="{{ i.thumbnail.url }}">
         <div class="box-element product">
             <h6><strong> {{i.name}} </strong></h6><br>
             <h6>{{i.description}}</h6>
             <hr>
             <button class="btn btn-outline-secondary add-btn">Add to Cart</button>
-            <a class="btn btn-outline-success" href="#">View</a>
+            <a class="btn btn-outline-success" href="{% url 'products_detail' i.id %}">View</a>
             <h4 style="display: inline-block;float: right">{{i.price}}</h4>
         </div>
     </div>
-</div>
+
 {% endfor %}
 {% else %}
 <strong>There are no products listed</strong>
 {% endif %}
-{% endblock %}}
+
 
 
 
