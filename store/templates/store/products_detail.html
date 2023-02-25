@@ -1,7 +1,5 @@
-
+{% extends 'store/base.html' %}
 {% load static %}
-
-{% if product %}
 
 {% block content %}
 
@@ -17,10 +15,5 @@
                 <h4 style="display: inline-block;float: right">{{product.price}}</h4>
             </div>
     </div>
+
 {% endblock content %}
-
-{% else %}
-<h2>Sorry</h2>
-{% endif %}
-
-

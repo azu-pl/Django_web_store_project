@@ -21,7 +21,7 @@ def cart(request):
 
 def products_list_view(request):
     products = Product.objects.all()
-    ctx = {'products':products}
+    ctx = {'products': products}
     return render(request, 'store/products_list_1.html', ctx)
 
 
