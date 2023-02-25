@@ -1,0 +1,19 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div>
+        <img class="thumbnail" src="{{ product.thumbnail.url }}">
+            <div class="box-element product">
+                <br>
+                <h1><strong> {{product.name}} </strong></h1>
+                <br>
+                <h3>{{product.description}}</h3>
+                <hr>
+                <button class="btn btn-outline-secondary add-btn">Add to Cart</button>
+                <h4 style="display: inline-block;float: right">{{product.price}}</h4>
+            </div>
+    </div>
+
+{% endblock content %}
