@@ -1,13 +1,36 @@
 {% extends 'store/base.html' %}
 {% load static %}
 {% block content %}
-
-<h1><strong>Busines Model Story and Introduction</strong></h1>
-<br>
-
-<h2>Sklep internetowy z panelem użytkownika i ciekawą ofertą</h2>
-<h2>Przełomowy design i niespotykany model biznesowy</h2>
-<h2>TYLKO DLA ORŁÓW ! :)</h2>
-
-
+    <div class="row">
+        <div class="col-lg-4">
+            <img class="thumbnail" src="{% static 'images/placeholder.png'%}">
+            <div class="box-element product">
+                <h6><strong>Product</strong></h6>
+                <hr>
+                <button class="btn btn-outline-secondary add-btn">Add to Cart</button>
+                <a class="btn btn-outline-success" href="#">View</a>
+                <h4 style="display: inline-block;float: right">500PLN</h4>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <img class="thumbnail" src="{% static 'images/placeholder.png'%}">
+            <div class="box-element product">
+                <h6><strong>Product</strong></h6>
+                <hr>
+                <button class="btn btn-outline-secondary add-btn">Add to Cart</button>
+                <a class="btn btn-outline-success" href="#">View</a>
+                <h4 style="display: inline-block;float: right">500PLN</h4>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <img class="thumbnail" src="{% static 'images/placeholder.png'%}">
+            <div class="box-element product">
+                <h6><strong>Product</strong></h6>
+                <hr>
+                <button class="btn btn-outline-secondary add-btn">Add to Cart</button>
+                <a class="btn btn-outline-success" href="#">View</a>
+                <h4 style="display: inline-block;float: right">500PLN</h4>
+            </div>
+        </div>
+    </div>
 {% endblock content %}

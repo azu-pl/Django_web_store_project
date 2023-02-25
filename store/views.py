@@ -30,6 +30,14 @@ def products_detail(request, id):
     ctx = {'product': product}
     return render(request, 'store/products_detail.html', ctx)
 
+def categories_list_view(request):
+    #categories = Category.objects.all()
+    #ctx = {'categories': categories}
+    pass
+
+def subcategories_list_view(request):
+    pass
+
 def checkout(request):
     context = {}
     return render(request, 'store/checkout.html', context)

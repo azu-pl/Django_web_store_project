@@ -1,23 +1,26 @@
 
 {% load static %}
 
-{% if product.exists %}
+{% if product %}
 
 {% block content %}
-<div>
-    <img class="thumbnail" src="{{ product.thumbnail.url }}">
-        <div class="box-element product">
-            <br>
-            <h1><strong> {{product.name}} </strong></h1>
-            <br>
-            <h3>{{product.description}}</h3>
-            <hr>
-            <button class="btn btn-outline-secondary add-btn">Add to Cart</button>
-            <h4 style="display: inline-block;float: right">{{product.price}}</h4>
-        </div>
-</div>
+
+    <div>
+        <img class="thumbnail" src="{{ product.thumbnail.url }}">
+            <div class="box-element product">
+                <br>
+                <h1><strong> {{product.name}} </strong></h1>
+                <br>
+                <h3>{{product.description}}</h3>
+                <hr>
+                <button class="btn btn-outline-secondary add-btn">Add to Cart</button>
+                <h4 style="display: inline-block;float: right">{{product.price}}</h4>
+            </div>
+    </div>
 {% endblock content %}
+
 {% else %}
-<strong>Sorry - no such product avaiable</strong>
+<h2>Sorry</h2>
 {% endif %}
+
 
