@@ -1,36 +1,32 @@
-<!-- templatka robocza dla widoku listy products; views.py/products_list_view -->
 
-{% extends 'store/base.html' %}
 {% load static %}
 
-{% block title %} PRODUCTS OVERVIEW {% endblock %}
+
 
 {% block content %}
-{% if products.exists %}
-<table>
-    <thead>
-        <tr>
-            <th></th>
-            <th><strong>Name</strong></th>
-            <th>Description</th>
-            <th><strong>price</strong></th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for i in products %}
-    <tr>
-        <th><a href=""></a><img id="art-icon" src="{{i.thumbnail}}"></a></th>
-        <th>{{i.name}}</th>
-        <th>{{i.description}}</th>
-        <th>{{i.price}}</th>
-    </tr>
-    {% endfor %}
-    </tbody>
-</table>
-{% else %}
-<strong>There are no products - sorry</strong>
-{% endif %}
-{% endblock %}
+    {% if products.exists %}
+        {% for i in products %}
+            <div>
+                <img class="thumbnail" src="{{ i.thumbnail.url }}">
+                <div class="box-element product">
+                    <!-- <h6>{{i.id}}</h6> -->
+                    <h1><strong> {{i.name}} </strong></h1><br>
+                    <h4>{{i.description}}</h4><br>
+                    <h2 style="display: inline-block;float: middle">{{i.price}}</h2><br>
+                    <button class="btn btn-outline-secondary add-btn">Add to Cart</button>
+                    <a class="btn btn-outline-success" href="{% url 'products_detail' i.id %}">View details</a>
+                    <hr>
+                </div>
+            </div>
+
+        {% endfor %}
+    {% else %}
+        <h6>brak produktów</h6>
+    {% endif %}
+{% endblock content %}
+
+
+
 
 
 

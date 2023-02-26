@@ -116,3 +116,20 @@ a.user-link:hover, a.user-link:active {
   background-color: #ffc107;
   color: black;
 }
+
+@media all and (min-width: 992px) {
+	.navbar .nav-item .dropdown-menu{ display: none; }
+	.navbar .nav-item .nav-link{ color:#fff;  }
+	.navbar .nav-item:hover .nav-link{   }
+	.navbar .nav-item:hover .dropdown-menu{ display: block; }
+	.navbar .nav-item .dropdown-menu{ margin-top:0; width:300px; background-color: #ffc107; box-shadow: -1px 4px 7px -2px rgba(33,33,33,1);}
+}
+
+@media only screen and (max-width: 992px) {
+    .navbar .nav-item {width: 7em;}
+    .navbar .nav-item .dropdown-menu{ display: none; width: 5em; }
+	.navbar .nav-item .nav-link{ color:#fff; width: 7em;  }
+	.navbar .nav-item:hover .nav-link{ width: 7em;  }
+	.navbar .nav-item:hover .dropdown-menu{ display: block; width:300px; }
+	.navbar .nav-item .dropdown-menu{ margin-top:0; width:300px; background-color: #ffc107; box-shadow: -1px 4px 7px -2px rgba(33,33,33,1);}
+}
