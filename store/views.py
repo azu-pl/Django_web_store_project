@@ -5,7 +5,7 @@ from django.views.generic.base import TemplateResponseMixin, ContextMixin, View
 
 from . import forms
 from django.contrib.auth import login, logout, authenticate
-from store.models import Profile, Category, Product, Subcategory
+from store.models import Profile, Category, Product, Subcategory, OrderItem, Order
 from django.contrib.auth.models import User
 from store.forms import CreateUserProfileForm
 from django.views.generic import CreateView, TemplateView, DetailView
@@ -51,6 +51,12 @@ class StoreMainView(BaseStoreView):
 
 class CartView(BaseStoreView):
     template_name = 'store/cart.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        order = Order.objects.get()
+        context['items'] = order.orderitem_set.all()
+        return context
 
 # def cart(request):
 #     context = {}
