@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-lg-10">
+    <div class="col-lg-12">
         <div class="box-element product-detail">
         <img class="thumbnail detail" src="{{ product.thumbnail.url }}">
             <br>
@@ -20,11 +20,30 @@
 </div>
 {% endblock content %}
 {% block comment %}
+
+
+{% if not product.comments.all %}
+<div class="container comment">
 <div class="row">
-    <div class="col-lg-10">
+    <div class="col-lg-12">
         <div class="box-element product-detail">
-            Brak komentarzy, jeszcze...
+            Brak komentarzy, jeszcze... <a href="#"> dodaj </a>
+        </div>
+    </div>
+</div></div>
+{% else %}
+    {% for comment in product.comments.all %}
+<div class="container comment"><div class="row">
+    <div class="col-lg-12">
+        <div class="box-element product-detail">
+            <strong>Data utworzenia:</strong> {{ comment.creation_datetime|date:"d M Y" }}  <strong>Autor:</strong> @{{ comment.creator.user }}
+            <br> {{comment.comment }}
+
         </div>
     </div>
 </div>
+</div>
+    {% endfor %}
+{% endif %}
+
 {% endblock comment %}
