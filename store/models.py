@@ -1,4 +1,6 @@
 import os
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 from django.db import models
 
 
@@ -53,7 +55,7 @@ def tb_media_path(instance, filename):
 class Product(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=250)
-    thumbnail = models.ImageField(upload_to=tb_media_path, blank=True)
+    thumbnail = models.ImageField(upload_to=tb_media_path, blank=True, default='placeholder/placeholder.png')
     subcategory = models.ForeignKey('Subcategory', on_delete=models.PROTECT)
     price = models.DecimalField(decimal_places=2, max_digits=7)
 
@@ -63,6 +65,29 @@ class Product(models.Model):
     class Meta:
         verbose_name = "Produkt"
         verbose_name_plural = "Produkty"
+
+
+def validate_score(value):
+    if value <= 0 or value > 5:
+        raise ValidationError(
+            _('%(value) must be between 1 and 5'),
+            params={'value': value}
+        )
+
+class Comment(models.Model):
+    creator = models.ForeignKey('Profile', null=True, on_delete=models.SET_NULL)
+    product = models.ForeignKey('Product', related_name="comments", on_delete=models.CASCADE)
+    title = models.CharField(max_length=30)
+    creation_datetime = models.DateTimeField(auto_now_add=True)
+    comment = models.TextField()
+    score = models.IntegerField(validators=[validate_score])
+
+    def __str__(self):
+        return f'{self.title} {self.comment} {self.creator} {self.score}'
+
+    class Meta:
+        verbose_name = "Komentarz"
+        verbose_name_plural = "Komentarze"
 
 
 class Order(models.Model):
@@ -97,3 +122,4 @@ class OrderItem(models.Model):
     def get_total(self):
         total = self.product.price * self.quantity
         return total
+

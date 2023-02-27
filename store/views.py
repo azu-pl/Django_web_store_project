@@ -1,13 +1,12 @@
 from django.contrib.auth.forms import AuthenticationForm, UsernameField
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.base import TemplateResponseMixin, ContextMixin, View
-
-from . import forms
 from django.contrib.auth import login, logout, authenticate
-from store.models import Profile, Category, Product, Subcategory, OrderItem, Order
+from store.models import Profile, Category, Product, Subcategory, Comment, OrderItem, Order
 from django.contrib.auth.models import User
-from store.forms import CreateUserProfileForm
+from store.forms import CreateUserProfileForm, RegisterUserForm
 from django.views.generic import CreateView, TemplateView, DetailView
 from django.urls import reverse_lazy, reverse
 
@@ -114,6 +113,8 @@ class SubcategoryDetailView(BaseStoreView):
         context = super().get_context_data(**kwargs)
         context['products'] = Product.objects.filter(subcategory_id=kwargs['pk'])
         return context
+
+
 def categories_detail_view(request, id):
     pass
 
@@ -131,21 +132,21 @@ class CheckoutView(BaseStoreView):
 
 
 class SignUp(BaseCreateView):
-    form_class = forms.ResisterUserForm
+    form_class = RegisterUserForm
     success_url = reverse_lazy('store')
     template_name = 'registration/sign_up.html'
 
 
 # def sign_up_view(request):
 #     if request.method == 'POST':
-#         form = forms.ResisterUserForm(request.POST)
+#         form = RegisterUserForm(request.POST)
 #         if form.is_valid():
 #             user = form.save()
 #             login(request, user)
 #             return redirect('store')
 #
 #     else:
-#         form = forms.ResisterUserForm()
+#         form = RegisterUserForm()
 #
 #     return render(request, 'registration/sign_up.html', {'form': form})
 
@@ -203,5 +204,14 @@ class ProfileCreateView(BaseCreateView):
         # here we set default logged in user
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    model = Comment
+    fields = '__all__'
+    template_name = 'store/form.html'
+
+    def get_success_url(self):
+        return reverse('products_detail', kwargs={'pk': self.object.pk})
 
 
