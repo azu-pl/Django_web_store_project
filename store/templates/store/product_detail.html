@@ -2,20 +2,48 @@
 {% load static %}
 
 {% block content %}
-
-    <div>
-        <img class="thumbnail" src="{{ product.thumbnail.url }}">
-            <div class="box-element product">
-                <br>
-                <h1><strong> {{product.name}} </strong></h1>
-                <br>
-                <h3>{{product.description}}</h3>
-                <hr>
-                <button class="btn btn-outline-secondary add-btn">Add to Cart</button>
-                <h4 style="display: inline-block;float: right">{{product.price}}</h4>
-                <hr>
-                <a class="btn btn-outline-success" href="{% url 'store' %}">Back to Main</a>
-            </div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box-element product-detail">
+        <img class="thumbnail detail" src="{{ product.thumbnail.url }}">
+            <br>
+            <h1><strong> {{product.name}} </strong></h1>
+            <br>
+            <h5>{{product.description}}</h5>
+            <hr>
+            <button class="btn btn-outline-secondary add-btn">Do Koszyka</button>
+            <h4 style="display: inline-block;float: right">{{product.price}} zł</h4>
+            <hr>
+            <a class="btn btn-outline-success" href="{% url 'store' %}">Powrót</a>
+        </div>
     </div>
-
+</div>
 {% endblock content %}
+{% block comment %}
+
+
+{% if not product.comments.all %}
+<div class="container comment">
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box-element product-detail">
+            Brak komentarzy, jeszcze... <a href="#"> dodaj </a>
+        </div>
+    </div>
+</div></div>
+{% else %}
+    {% for comment in product.comments.all %}
+<div class="container comment"><div class="row">
+    <div class="col-lg-12">
+        <div class="box-element product-detail">
+            <strong>Data utworzenia:</strong> {{ comment.creation_datetime|date:"d M Y" }}  <strong>Autor:</strong> @{{ comment.creator.user }}
+            <br> {{comment.comment }}
+
+        </div>
+    </div>
+</div>
+</div>
+    {% endfor %}
+{% endif %}
+
+{% endblock comment %}
