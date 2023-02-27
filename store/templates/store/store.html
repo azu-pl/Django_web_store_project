@@ -2,6 +2,28 @@
 {% load static %}
 {% block content %}
     <div class="row">
-        {% include 'store/products_list.html' %}
+
+    {% if products.exists %}
+        {% for i in products %}
+            <div class="col-lg-4">
+                <a class="" href="{% url 'products_detail' i.id %}">
+                <img class="thumbnail" src="{{ i.thumbnail.url }}"></a>
+                <div class="box-element product">
+                    <!-- <h6>{{i.id}}</h6> -->
+                    <h5><strong> {{i.name}} </strong></h5><br>
+                    <div class="product-descr-list"><h6>{{ i.description|truncatewords:20 }}</h6></div><br>
+                    <h4 style="display: inline-block; float: right">{{i.price}} zł</h4><br>
+                    <hr>
+                    <a class="btn btn-outline-success" href="{% url 'products_detail' i.id %}">Szczegóły</a>
+                    <button class="btn btn-outline-secondary add-btn">Do Koszyka</button>
+
+                </div>
+            </div>
+
+        {% endfor %}
+    {% else %}
+        <h6>brak produktów</h6>
+    {% endif %}
+
     </div>
 {% endblock content %}

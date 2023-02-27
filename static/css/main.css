@@ -13,12 +13,28 @@ h1,h2,h3,h4,h5,h6{
 	padding: 10px;
 }
 
+.box-element.product{
+    height: 280px;
+}
+
+.product-descr-list{
+    height: 85px;
+}
+
 .thumbnail{
 	width: 100%;
 	height: 200px;
 	-webkit-box-shadow: -1px -3px 5px -2px rgba(214,214,214,1);
     -moz-box-shadow: -1px -3px 5px -2px rgba(214,214,214,1);
     box-shadow: -1px -3px 5px -2px rgba(214,214,214,1);
+}
+
+.thumbnail.detail{
+    width: 40%;
+    height: 300px;
+    float: left;
+
+    margin: 10px;
 }
 
 .product{
@@ -132,4 +148,24 @@ a.user-link:hover, a.user-link:active {
 	.navbar .nav-item:hover .nav-link{ width: 7em;  }
 	.navbar .nav-item:hover .dropdown-menu{ display: block; width:300px; }
 	.navbar .nav-item .dropdown-menu{ margin-top:0; width:300px; background-color: #ffc107; box-shadow: -1px 4px 7px -2px rgba(33,33,33,1);}
+}
+
+.float-end {
+    float: right;
+}
+
+#page-container {
+  position: relative;
+  min-height: 100vh;
+}
+
+#content-wrap {
+  padding-bottom: 4.5rem;    /* Footer height */
+}
+
+.text-muted {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 4.5rem;            /* Footer height */
 }
