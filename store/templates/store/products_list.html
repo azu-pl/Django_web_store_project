@@ -1,36 +1,26 @@
-<!--{% load static %}-->
 
-<!--{% block content %}-->
-<!--<div class="row">-->
-<!--    {% if products.exists %}-->
-<!--        {% for i in products %}-->
-<!--            <div class="col-lg-5">-->
-<!--                <img class="thumbnail" src="{{ i.thumbnail.url }}">-->
-<!--                <div class="box-element product">-->
-<!--                    &lt;!&ndash; <h6>{{i.id}}</h6> &ndash;&gt;-->
-<!--                    <h1><strong> {{i.name}} </strong></h1><br>-->
-<!--                    <h4>{{i.description}}</h4><br>-->
-<!--                    <h2 style="display: inline-block;float: middle">{{i.price}}</h2><br>-->
-<!--                    <button class="btn btn-outline-secondary add-btn">Add to Cart</button>-->
-<!--                    <a class="btn btn-outline-success" href="{% url 'products_detail' i.id %}">View details</a>-->
-<!--                    <hr>-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--        {% endfor %}-->
-<!--    {% else %}-->
-<!--        <h6>brak produktów</h6>-->
-<!--    {% endif %}-->
-<!--</div>-->
-<!--{% endblock content %}-->
-<!--{% block comment %}-->
-<!--<div>Brak komentarzy, jeszcze...</div>-->
-
-<!--{% endblock comment %}-->
+{% load static %}
 
 
 
+{% block content %}
+    {% if products.exists %}
+        {% for i in products %}
+            <div>
+                <img class="thumbnail" src="{{ i.thumbnail.url }}">
+                <div class="box-element product">
+                    <!-- <h6>{{i.id}}</h6> -->
+                    <h1><strong> {{i.name}} </strong></h1><br>
+                    <h4>{{i.description}}</h4><br>
+                    <h2 style="display: inline-block;float: middle">{{i.price|floatformat:2}}</h2><br>
+                    <button data-product="{{ product.pk }}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
+                    <a class="btn btn-outline-success" href="{% url 'products_detail' i.id %}">View details</a>
+                    <hr>
+                </div>
+            </div>
 
-
-
-
+        {% endfor %}
+    {% else %}
+        <h6>brak produktów</h6>
+    {% endif %}
+{% endblock content %}
