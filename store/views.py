@@ -53,9 +53,28 @@ class CartView(BaseStoreView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         order = Order.objects.get()
-        context['items'] = order.orderitem_set.all()
+        items = order.orderitem_set.all()
+
+        context['items'] = items
+        context['order'] = order
         return context
+
+
+class CheckoutView(BaseStoreView):
+    template_name = 'store/checkout.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        order = Order.objects.get()
+        items = order.orderitem_set.all()
+
+        context['items'] = items
+        context['order'] = order
+        return context
+
 
 # def cart(request):
 #     context = {}
@@ -125,10 +144,6 @@ def subcategories_detail_view(request, id):
 
 def subcategories_list_view(request):
     pass
-
-
-class CheckoutView(BaseStoreView):
-    template_name = 'store/checkout.html'
 
 
 class SignUp(BaseCreateView):
