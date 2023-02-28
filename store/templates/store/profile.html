@@ -1,16 +1,55 @@
 {% extends 'store/base.html' %}
 {% block title %} Profil {{ user.username }} {% endblock %}
 {% block content %}
-{% include 'store/user_data.html' %}
+<h1>Profil klienta: {{ user.username }}</h1>
+<div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="row">
+            <div class="col-lg-4">
+                <div class="box-element product-detail">
+                    <div style="display: inline-block; float: left; width: 100%;">
+                        {% include 'store/user_data.html' %}
 
-<div>
-  Adres:<br>
-  {{ profile.street }} {{ profile.number }}<br>
-  {{ profile.post_code }} {{ profile.city }}<br>
-  tel: {{ profile.phone_number }}<br><br><hr>
+                    </div>
+                    <div style="display: inline-block; float: left; width: 100%;"><hr></div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="box-element product-detail">
+                    <div style="width: 100%;">
+                      {% if profile %}
+                        <div>
+                            Adres:<br>
+                            {{ profile.street }} {{ profile.number }}<br>
+                            {{ profile.post_code }} {{ profile.city }}<br>
+                            tel: {{ profile.phone_number }}<br><br><hr>
+                        </div>
+                        <div>
+                            Dodatkowe informacje:<br>
+                                {{ profile.info }}
+                        </div>
+                        {% else %}
+                        <div>
+                            <h4>Nie masz jeszcze uzupełnionego profilu.</h4>
+                            <h6>Uzupełnij Profil aby zapamiętać adres dostawy. </h6><br>
+                            {% include 'store/form.html' %}
+                        </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+      </div>
+    </div>
+  </div>
 </div>
-<div>
-  Dodatkowe informacje:<br>
-  {{ profile.info }}
-</div><hr>
-{% endblock %}
+
+{% endblock content%}
+
+{% block orders %}
+    {% include 'store/user_orders.html' %}
+{% endblock orders %}
+{% block comment %}
+    {% include 'store/user_comments.html' %}
+{% endblock comment %}

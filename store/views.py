@@ -6,7 +6,7 @@ from django.views.generic.base import TemplateResponseMixin, ContextMixin, View
 from django.contrib.auth import login, logout, authenticate
 from store.models import Profile, Category, Product, Subcategory, Comment, OrderItem, Order
 from django.contrib.auth.models import User
-from store.forms import CreateUserProfileForm, RegisterUserForm
+from store.forms import CreateUserProfileForm, RegisterUserForm, CreateCommentForm
 from django.views.generic import CreateView, TemplateView, DetailView
 from django.urls import reverse_lazy, reverse
 
@@ -211,7 +211,7 @@ class ProfileView(BaseStoreView):
 
 
 class ProfileCreateView(BaseCreateView):
-    template_name = 'store/form.html'
+    template_name = 'store/profile.html'
     form_class = CreateUserProfileForm
     success_url = reverse_lazy('profile')
 
@@ -221,12 +221,18 @@ class ProfileCreateView(BaseCreateView):
         return super().form_valid(form)
 
 
-class CommentCreateView(LoginRequiredMixin, CreateView):
+class CommentCreateView(LoginRequiredMixin, BaseCreateView):
     model = Comment
-    fields = '__all__'
+    form_class = CreateCommentForm
+    # fields = '__all__'
     template_name = 'store/add_comment.html'
 
     def get_success_url(self):
-        return reverse('products_detail', kwargs={'pk': self.object.pk})
+        return reverse('products_detail', kwargs={'pk': self.object.product.pk})
+
+    def form_valid(self, form):
+        form.instance.product_id = self.kwargs['pk']
+        form.instance.creator_id = self.request.user.pk
+        return super().form_valid(form)
 
 

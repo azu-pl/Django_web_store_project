@@ -54,13 +54,22 @@ def tb_media_path(instance, filename):
 
 class Product(models.Model):
     name = models.CharField(max_length=50)
-    description = models.TextField(max_length=250)
+    description = models.TextField()
     thumbnail = models.ImageField(upload_to=tb_media_path, blank=True, default='placeholder/placeholder.png')
     subcategory = models.ForeignKey('Subcategory', on_delete=models.PROTECT)
     price = models.DecimalField(decimal_places=2, max_digits=7)
 
     def __str__(self):
         return f"{self.name}, {self.subcategory}"
+
+    @property
+    def get_total_score(self):
+        commentset = self.comments.all()
+        if len(commentset) == 0:
+            return 0
+        else:
+            total = sum([comment.score for comment in commentset])//len(commentset)
+        return total
 
     class Meta:
         verbose_name = "Produkt"
@@ -75,7 +84,8 @@ def validate_score(value):
         )
 
 class Comment(models.Model):
-    creator = models.ForeignKey('Profile', null=True, on_delete=models.SET_NULL)
+    # creator = models.ForeignKey('Profile', related_name="profile_comments", null=True, on_delete=models.SET_NULL)
+    creator = models.ForeignKey('auth.user', related_name="profile_comments", null=True, on_delete=models.SET_NULL)
     product = models.ForeignKey('Product', related_name="comments", on_delete=models.CASCADE)
     title = models.CharField(max_length=30)
     creation_datetime = models.DateTimeField(auto_now_add=True)
@@ -91,7 +101,7 @@ class Comment(models.Model):
 
 
 class Order(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.SET_NULL, blank=True, null=True)
+    profile = models.ForeignKey(Profile, related_name='orders', on_delete=models.SET_NULL, blank=True, null=True)
     date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False, null=True, blank=False)
     transaction_id = models.CharField(max_length=200, null=True)

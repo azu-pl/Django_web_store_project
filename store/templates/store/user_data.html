@@ -1,8 +1,15 @@
-<h1>Profil klienta: {{ user.username }}</h1>
-<div>
-  Dane klienta:<br>
-  {{ user.first_name }}<br>
-  {{ user.last_name }}<br>
-  {{ user.email }}
-  <hr>
-</div>
+<h4>Dane klienta:</h4>
+<table>
+<tr>
+    <td style="width: 100px"><strong> Imię:</strong></td>
+    <td><span>{{ user.first_name }}</span></td>
+</tr>
+<tr>
+    <td style="width: 60px"><strong> Nazwisko:</strong></td>
+    <td><span>{{ user.last_name }}</span></td>
+</tr>
+<tr>
+    <td style="width: 60px"><strong> E-mail:</strong></td>
+    <td><span>{{ user.email }}</span></td>
+</tr>
+</table>
