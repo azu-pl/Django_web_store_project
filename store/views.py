@@ -209,7 +209,7 @@ class ProfileCreateView(BaseCreateView):
 class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
     fields = '__all__'
-    template_name = 'store/form.html'
+    template_name = 'store/add_comment.html'
 
     def get_success_url(self):
         return reverse('products_detail', kwargs={'pk': self.object.pk})

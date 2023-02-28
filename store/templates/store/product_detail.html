@@ -4,17 +4,29 @@
 {% block content %}
 <div class="row">
     <div class="col-lg-12">
-        <div class="box-element product-detail">
-        <img class="thumbnail detail" src="{{ product.thumbnail.url }}">
-            <br>
-            <h1><strong> {{product.name}} </strong></h1>
-            <br>
-            <h5>{{product.description}}</h5>
-            <hr>
-            <button class="btn btn-outline-secondary add-btn">Do Koszyka</button>
-            <h4 style="display: inline-block;float: right">{{product.price}} zł</h4>
-            <hr>
-            <a class="btn btn-outline-success" href="{% url 'store' %}">Powrót</a>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="box-element product-detail thumbnail">
+                    <img class="thumbnail detail" src="{{ product.thumbnail.url }}">
+                </div>
+                <div class="box-element product-detail cash"><br>
+                    <button class="btn btn-outline-secondary add-btn">Do Koszyka</button>
+                    <h4 style="display: inline-block; float: right">{{product.price}} zł</h4>
+                    <br>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="box-element product-detail">
+                    <h1><strong> {{product.name}} </strong></h1>
+                    <h2><strong> {{product.comments.filter}} </strong></h2>
+                    <br>
+                    <h5>{{product.description}}</h5>
+                    <hr>
+                </div>
+            </div>
+
+
         </div>
     </div>
 </div>
@@ -26,7 +38,7 @@
 <div class="container comment">
 <div class="row">
     <div class="col-lg-12">
-        <div class="box-element product-detail">
+        <div class="box-element product-comment">
             Brak komentarzy, jeszcze... <a href="#"> dodaj </a>
         </div>
     </div>
@@ -35,9 +47,16 @@
     {% for comment in product.comments.all %}
 <div class="container comment"><div class="row">
     <div class="col-lg-12">
-        <div class="box-element product-detail">
-            <strong>Data utworzenia:</strong> {{ comment.creation_datetime|date:"d M Y" }}  <strong>Autor:</strong> @{{ comment.creator.user }}
-            <br> {{comment.comment }}
+        <div class="box-element product-comment">
+            <div style="display: inline-block; float: left">
+                <strong>Data utworzenia:</strong> {{ comment.creation_datetime|date:"d M Y" }}
+                <strong>Autor:</strong> @{{ comment.creator.user }}
+            </div>
+            <div style="display: inline-block; float: right">
+                <strong>Ocena:</strong> {{ comment.score }}/5
+            </div><br>
+            <hr>
+            <div class="comment-text">{{comment.comment }}</div>
 
         </div>
     </div>

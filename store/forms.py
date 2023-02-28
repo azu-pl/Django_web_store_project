@@ -27,4 +27,4 @@ class CreateCommentForm(forms.Form):
     # product = models.ForeignKey('Product', on_delete=models.PROTECT)
     title = forms.CharField(max_length=30)
     comment = forms.Textarea()
-    score = forms.IntegerField()
+    score = forms.IntegerField(min_value=1, max_value=5)
