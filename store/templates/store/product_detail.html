@@ -18,11 +18,21 @@
 
             <div class="col-lg-8">
                 <div class="box-element product-detail">
-                    <h1><strong> {{product.name}} </strong></h1>
-                    <h2><strong> {{product.comments.filter}} </strong></h2>
-                    <br>
-                    <h5>{{product.description}}</h5>
-                    <hr>
+                    <div style="display: inline-block; float: left; height: 6rem; width: 75%;">
+                        <h1><strong> {{product.name}} </strong></h1>
+                    </div>
+                    <div style="display: inline-block; float: right">
+                        <strong>
+                            <span style="font-size:1.9rem;">Ocena:  {{product.get_total_score}}/</span>
+                            <span style="font-size:1.2rem;"><sup>5</sup></span>
+                        </strong>
+                    </div>
+                    <div style="display: block; margin-top:6rem;">
+                        <br>Opis Produktu:
+                        <hr>
+                            <h5>{{product.description}}</h5>
+                        <hr>
+                    </div>
                 </div>
             </div>
 
