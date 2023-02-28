@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile, Comment
 
 
 class RegisterUserForm(UserCreationForm):
@@ -19,12 +19,25 @@ class CreateUserProfileForm(forms.ModelForm):
         model = Profile
         # fields = '__all__'
         exclude = ['user',]
+        labels = {'street': "Ulica", 'number': "Numer", 'post_code': "Kod pocztowy", 'city': "Miejscowość",
+                  'phone_number': "Telefon", 'info': "Informacje"}
 
 
-class CreateCommentForm(forms.Form):
+# class CreateCommentForm(forms.Form):
+#
+#     # creator = models.ForeignKey('Profile', null=True, on_delete=models.SET_NULL)
+#     # product = models.ForeignKey('Product', on_delete=models.PROTECT)
+#     title = forms.CharField(max_length=30)
+#     comment = forms.Textarea()
 
-    # creator = models.ForeignKey('Profile', null=True, on_delete=models.SET_NULL)
-    # product = models.ForeignKey('Product', on_delete=models.PROTECT)
-    title = forms.CharField(max_length=30)
-    comment = forms.Textarea()
-    score = forms.IntegerField(min_value=1, max_value=5)
+
+class CreateCommentForm(forms.ModelForm):
+    score = forms.IntegerField(min_value=1, max_value=5, label="Ocena")
+    class Meta:
+        model = Comment
+        # fields = '__all__'
+        exclude = ['creator', 'product',]
+        # widgets = {'score': forms.IntegerField(min_value=1, max_value=5),}
+        labels = {'title': "Tytuł", 'comment': "Treść"}
+
+

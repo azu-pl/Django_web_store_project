@@ -18,7 +18,7 @@
 
             <div class="col-lg-8">
                 <div class="box-element product-detail">
-                    <div style="display: inline-block; float: left; height: 6rem; width: 75%;">
+                    <div style="display: inline-block; float: left; height: 6rem; width: 100%;">
                         <h1><strong> {{product.name}} </strong></h1>
                     </div>
                     <div style="display: inline-block; float: right">
@@ -49,24 +49,39 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="box-element product-comment">
-            Brak komentarzy, jeszcze... <a href="#"> dodaj </a>
+            <strong style="display: inline-block; float: left; margin-top:4px">Brak komentarzy dla produktu... </strong>
+            <a class="btn btn-outline-dark" href="{% url 'add_comment' product.pk %}" style="display: inline-block; float: right;"> Dodaj Nowy Komentarz</a>
         </div>
     </div>
 </div></div>
 {% else %}
+<div class="container comment">
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box-element product-comment">
+            <strong style="display: inline-block; float: left; margin-top:4px">Utwórz nowy komentarz:</strong>
+            <a class="btn btn-outline-dark" href="{% url 'add_comment' product.pk %}" style="display: inline-block; float: right;"> Dodaj </a>
+        </div>
+    </div>
+</div></div>
     {% for comment in product.comments.all %}
 <div class="container comment"><div class="row">
     <div class="col-lg-12">
         <div class="box-element product-comment">
-            <div style="display: inline-block; float: left">
+            <div style="margin-bottom: -1rem;">
+            <div style="display: inline-block; float: left;">
                 <strong>Data utworzenia:</strong> {{ comment.creation_datetime|date:"d M Y" }}
-                <strong>Autor:</strong> @{{ comment.creator.user }}
+                <strong>Autor:</strong> @{{ comment.creator }}
             </div>
-            <div style="display: inline-block; float: right">
-                <strong>Ocena:</strong> {{ comment.score }}/5
-            </div><br>
-            <hr>
-            <div class="comment-text">{{comment.comment }}</div>
+                <div style="display: inline-block; float: right;">
+                    <strong>Ocena:</strong> {{ comment.score }}/5
+                </div>
+            </div>
+            <br>
+                <div><hr><div style="margin-bottom: 1rem; margin-top: -1rem;"> <span style="font-size:1.5rem;">{{comment.title }}</span></div>
+                <div class="comment-text">{{comment.comment }}</div>
+            </div>
+
 
         </div>
     </div>

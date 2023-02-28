@@ -220,6 +220,11 @@ a.user-link:hover, a.user-link:active {
     min-height: 6rem;
     padding: 10px;
     margin: -3px;
+    margin-top: -8px;
     border-radius: 10px;
+}
+
+.box-element.product-comment{
+    min-height: 3.5rem;
 }
 /* Comment section end */

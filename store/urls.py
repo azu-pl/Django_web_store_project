@@ -25,5 +25,5 @@ urlpatterns = [
     # path('profile/', views.profile_view, name='profile'),
     path('profile/', ProfileView.as_view(), name='profile'),
     path('profile/create/', ProfileCreateView.as_view(), name='profile_create'),
-    path('comment/', CommentCreateView.as_view()),
+    path('comment/<int:pk>/add/', CommentCreateView.as_view(), name='add_comment'),
 ]
