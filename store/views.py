@@ -121,7 +121,6 @@ class CategoryDetailView(BaseStoreView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['products'] = Product.objects.filter(subcategory__category=kwargs['pk'])
-        print(context)
         return context
 
 
@@ -233,7 +232,6 @@ class CommentCreateView(LoginRequiredMixin, BaseCreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['cancel'] = reverse('products_detail', kwargs={'pk': self.kwargs['pk']})
-        print(context)
         return context
 
     def form_valid(self, form):
