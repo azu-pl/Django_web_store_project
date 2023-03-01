@@ -7,7 +7,7 @@ from django.contrib.auth import login, logout, authenticate
 from store.models import Profile, Category, Product, Subcategory, Comment, OrderItem, Order
 from django.contrib.auth.models import User
 from store.forms import CreateUserProfileForm, RegisterUserForm, CreateCommentForm
-from django.views.generic import CreateView, TemplateView, DetailView
+from django.views.generic import CreateView, TemplateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 
 
@@ -121,7 +121,6 @@ class CategoryDetailView(BaseStoreView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['products'] = Product.objects.filter(subcategory__category=kwargs['pk'])
-        print(context)
         return context
 
 
@@ -230,9 +229,42 @@ class CommentCreateView(LoginRequiredMixin, BaseCreateView):
     def get_success_url(self):
         return reverse('products_detail', kwargs={'pk': self.object.product.pk})
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['cancel'] = reverse('products_detail', kwargs={'pk': self.kwargs['pk']})
+        return context
+
     def form_valid(self, form):
         form.instance.product_id = self.kwargs['pk']
         form.instance.creator_id = self.request.user.pk
         return super().form_valid(form)
 
 
+
+
+class CommentUpdateView(UpdateView):
+    model = Comment
+    form_class = CreateCommentForm
+    # fields = ['title', 'comment', 'score']
+    template_name = 'store/add_comment.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        context['cancel'] = self.get_success_url()
+        return context
+
+    def get_success_url(self):
+        return reverse('profile')
+
+
+class CommentDeleteView(DeleteView):
+    model = Comment
+    success_url = reverse_lazy('profile')
+    template_name = 'store/confirm_delete.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        context['cancel'] = reverse('profile')
+        return context

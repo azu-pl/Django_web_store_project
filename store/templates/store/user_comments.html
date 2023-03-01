@@ -1,49 +1,57 @@
 {% if not user.profile_comments.all %}
 <div class="container comment">
-<div class="row">
-    <div class="col-lg-12">
-        <div class="box-element product-comment">
-            <h4 style="margin-top:4px">Wszystkie komentarze użytkownika: </h4>
-        </div>
-    </div>
-    <div class="col-lg-12">
-        <div class="box-element product-comment">
-            <h4 style="margin-top:4px">Nie napisałeś jeszcze żadnego komentarza... </h4>
-        </div>
-    </div>
-</div></div>
-{% else %}
-<div class="container comment">
-<div class="row">
-    <div class="col-lg-12">
-        <div class="box-element product-comment">
-            <h4 style="margin-top:4px">Wszystkie komentarze użytkownika: </h4>
-
-        </div>
-    </div>
-</div></div>
-    {% for comment in user.profile_comments.all %}
-<div class="container comment"><div class="row">
-    <div class="col-lg-12">
-        <div class="box-element product-comment">
-            <div style="margin-bottom: -1rem;">
-            <div style="display: inline-block; float: left;">
-                <strong>Data utworzenia:</strong> {{ comment.creation_datetime|date:"d M Y" }}
-                <strong>Produkt:</strong>  {{ comment.product.name }}
-            </div>
-                <div style="display: inline-block; float: right;">
-                    <strong>Ocena:</strong> {{ comment.score }}/5
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box-element product-order-box">
+                <div>
+                    <div> <h4 style="margin-top:4px">Twoje komentarze: </h4>
+                        <hr>
+                    </div>
+                    <div class="box-element product-order" style="margin-top: 1rem; border-radius: 10px;">
+                        <h4 style="margin-top:4px">Nie napisałeś jeszcze żadnego komentarza... </h4>
+                    </div>
                 </div>
             </div>
-            <br>
-                <div><hr><div style="margin-bottom: 1rem; margin-top: -1rem;"> <span style="font-size:1.5rem;">{{comment.title }}</span></div>
-                <div class="comment-text">{{comment.comment }}</div>
-            </div>
-
-
         </div>
     </div>
 </div>
-</div>
-    {% endfor %}
+{% else %}
+<div class="container comment">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box-element product-order-box">
+                <div>
+                    <div> <h4 style="margin-top:4px">Twoje komentarze: </h4>
+                        <hr>
+                    </div>
+    {% for comment in user.profile_comments.all %}
+
+                    <div class="box-element product-comment" style="margin-top: 1rem; border-radius: 10px;">
+                        <div style="margin-bottom: -1rem;">
+                            <div style="display: inline-block; float: left;">
+                                <strong>Data utworzenia:</strong> {{ comment.creation_datetime|date:"d M Y" }}
+                                <strong>Produkt:</strong>  {{ comment.product.name }}
+                            </div>
+                            <div style="display: inline-block; float: right;">
+                                <strong>Ocena:</strong> {{ comment.score }}/5
+                            </div>
+                        </div>
+                        <br>
+                        <div><hr>
+                            <div style="margin-bottom: 1rem; margin-top: -1rem; display: inline-block; float: left;" >
+                                <span style="font-size:1.5rem;">{{comment.title }}</span>
+                            </div>
+                            <div style="display: inline-block; float: right; margin-top: -1rem;">
+                                <a class="btn btn-outline-dark" href="{% url 'edit_comment' comment.pk %}" style="">Edytuj</a>
+                                <a class="btn btn-outline-dark" href="{% url 'delete_comment' comment.pk %}" style="">Usuń</a>
+                            </div>
+                        </div><br>
+                        <div>
+                            <div class="comment-text order">{{comment.comment }}</div>
+                        </div>
+                    </div>{% endfor %}
+                </div>
+            </div>
+</div></div></div>
+
 {% endif %}

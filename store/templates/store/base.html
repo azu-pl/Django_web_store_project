@@ -15,47 +15,65 @@
 
 <body>
 	<div id="page-container">
-		<div id="content-wrap">
+		<div id="content-wrap" class="content-wrap">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+		  	</button>
 		  <a class="navbar-brand" href="{% url 'store' %}">Django_web_store_SDA</a>
-		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		  </button>
+
 
 		  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
 			  <li class="nav-item active">
-				<a class="nav-link" href="{% url 'store' %}"> Strona główna <span class="sr-only">(current)</span></a>
+				<a class="nav-link" href="{% url 'store' %}"> Strona główna <span class="sr-only"></span></a>
 			  </li>
-
-				{% for category in categories %}
-      			<li class="nav-item dropdown">
-          			<a class="nav-link dropdown-toggle" href="{% url 'categories_detail_list' category.id %}" id="navbarDropdown">
-						{{category.name}}<span class="sr-only">(current)</span></a>
-
-          			<div class="dropdown-menu">
-                		{% for subcategory in category.subcategory_set.all %}
-                       <a class="dropdown-item" href="{% url 'subcategories_detail_list' subcategory.id %}">{{ subcategory.name }}<span class="sr-only">(current)</span></a>
+			  {% for category in categories %}
+			  <li class="nav-item dropdown">
+				  <a class="nav-link dropdown-toggle" href="{% url 'categories_detail_list' category.id %}" id="navbarDropdown">
+					  {{category.name}}<span class="sr-only"></span></a>
+				  <ul class="dropdown-menu">
+				  	{% for subcategory in category.subcategory_set.all %}
+				  	<li><a class="dropdown-item" href="{% url 'subcategories_detail_list' subcategory.id %}">
+						   {{ subcategory.name }} ({{ subcategory.product_set.count }})<span class="sr-only">(current)</span></a></li>
 
                 		{% endfor %}
-          			</div>
-				</li>
-    			{% endfor %}
+				  </ul>
+			  </li>
+			  {% endfor %}
 			</ul>
-			  <div class="form-inline my-2 my-lg-0">
-        		{% if user.is_authenticated %}
-				  <div class="welcome-msg">Witaj <a class="user-link" href="{% url 'profile' %}">{{ user.username }}</a> !</div>
-				  <a href="{% url 'logout' %}" class="btn btn-warning">Logout</a>
+<!--		  </div>-->
+			  <div class="form-inline my-0 my-lg-0" style="min-width: 120px; display: inline; float: right;">
+				{% if user.is_authenticated %}
+				  <div class="" style="min-width: 110px; display: inline; float: left;">
+				    <div class="welcome-msg" style="min-width: 90px; float: left;">Witaj
+						<a class="user-link" href="{% url 'profile' %}">{{ user.username }}</a> !
+				    </div>
+				    <div style="width: 70px; float: right;">
+						<a href="{% url 'logout' %}" class="btn btn-warning">Logout</a>
+				    </div>
+				  </div>
+
         		{% else %}
-				  <a href="{% url 'login' %}" class="btn btn-warning">Login</a>
+				  <div style="min-width: 70px; float: left;">
+
+				  <div style="width: 60px;  float: middle;">
+						<a href="{% url 'login' %}" class="btn btn-warning">Login</a>
+				  </div>
+				  </div>
+
 				{% endif %}
-	     	
-	     		<a href="{% url 'cart' %}">
-	    			<img  id="cart-icon" src="{% static 'images/cart.png' %}">
-	    		</a>
-	    		<p id="cart-total">0</p>
-		  	</div>
-		  </div>
+					<div class="form-inline my-0 my-lg-0" style="width: 60px; display: block-inline; float: right;">
+	     				<a href="{% url 'cart' %}">
+	    				<img  id="cart-icon" src="{% static 'images/cart.png' %}">
+	    				</a>
+	    				<p id="cart-total">0</p>
+					</div>
+		  		</div>
+
+
+<!---->
+</div>
 		</nav>
 		<hr>
 		<main>
