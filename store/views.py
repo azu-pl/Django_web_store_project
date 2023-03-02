@@ -240,8 +240,6 @@ class CommentCreateView(LoginRequiredMixin, BaseCreateView):
         return super().form_valid(form)
 
 
-
-
 class CommentUpdateView(UpdateView):
     model = Comment
     form_class = CreateCommentForm
@@ -251,7 +249,7 @@ class CommentUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
-        context['cancel'] = self.get_success_url()
+        context['cancel'] = self.request.META.get('HTTP_REFERER')
         return context
 
     def get_success_url(self):
@@ -266,5 +264,17 @@ class CommentDeleteView(DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
-        context['cancel'] = reverse('profile')
+        context['cancel'] = self.request.META.get('HTTP_REFERER')
         return context
+
+
+class CommentProductUpdateView(CommentUpdateView):
+    
+    def get_success_url(self):
+        return reverse('products_detail', kwargs={'pk': self.object.product.pk})
+
+
+class CommentProductDeleteView(CommentDeleteView):
+
+    def get_success_url(self):
+        return reverse('products_detail', kwargs={'pk': self.object.product.pk})
