@@ -6,7 +6,7 @@ from django.views.generic.base import TemplateResponseMixin, ContextMixin, View
 from django.contrib.auth import login, logout, authenticate
 from store.models import Profile, Category, Product, Subcategory, Comment, OrderItem, Order
 from django.contrib.auth.models import User
-from store.forms import CreateUserProfileForm, RegisterUserForm, CreateCommentForm
+from store.forms import CreateUserProfileForm, RegisterUserForm, CreateCommentForm, ProfileUpdateForm
 from django.views.generic import CreateView, TemplateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 
@@ -278,3 +278,28 @@ class CommentProductDeleteView(CommentDeleteView):
 
     def get_success_url(self):
         return reverse('products_detail', kwargs={'pk': self.object.product.pk})
+
+
+class UserUpdateProfileView(LoginRequiredMixin, UpdateView):
+    template_name = 'store/form.html'
+    context_object_name = 'user'
+    queryset = Profile.objects.all()
+    form_class = ProfileUpdateForm
+
+    def get_context_data(self, **kwargs):
+        context = super(UserUpdateProfileView, self).get_context_data(**kwargs)
+        user = self.request.user
+        context['profile_form'] = ProfileUpdateForm(instance=self.request.user.profile,
+                                                    initial={'first_name': user.first_name, 'last_name': user.last_name,
+                                                             'email': user.email})
+        return context
+
+    def form_valid(self, form):
+        profile = form.save(commit=False)
+        user = profile.user
+        user.last_name = form.cleaned_data['last_name']
+        user.first_name = form.cleaned_data['first_name']
+        user.email = form.cleaned_data['email']
+        user.save()
+        profile.save()
+        return HttpResponseRedirect(reverse('profile', kwargs={'pk': self.get_object().id}))

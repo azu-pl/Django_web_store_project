@@ -33,6 +33,7 @@ class CreateUserProfileForm(forms.ModelForm):
 
 class CreateCommentForm(forms.ModelForm):
     score = forms.IntegerField(min_value=1, max_value=5, label="Ocena")
+
     class Meta:
         model = Comment
         # fields = '__all__'
@@ -41,3 +42,12 @@ class CreateCommentForm(forms.ModelForm):
         labels = {'title': "Tytuł", 'comment': "Treść"}
 
 
+class ProfileUpdateForm(forms.ModelForm):
+    first_name = forms.CharField(max_length=32)
+    last_name = forms.CharField(max_length=32)
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = Profile
+        fields = ['street', 'number', 'post_code', 'city',
+                  'phone_number', 'info']
