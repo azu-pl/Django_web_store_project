@@ -5,11 +5,24 @@
 <div>
   <div class="row">
     <div class="col-lg-12">
+        <form method="post">
+
       <div class="row">
             <div class="col-lg-4">
                 <div class="box-element product-detail">
                     <div style="display: inline-block; float: left; width: 100%;">
-                        {% include 'store/user_data.html' %}
+                        <div>{% csrf_token %}
+                            <form method="post">
+                            <table>{{ user_form }}
+                                <tr></tr>
+                                <tr>
+                                    <td><input type="submit" value="Uaktualnij" class="btn btn-primary"></td>
+                                    <td>{% if cancel %} <a class="btn btn-success" href="{{ cancel }}">Anuluj</a>{% endif %}</td>
+                                </tr>
+                            </table>
+                        </form>
+
+                        </div>
 
                     </div>
                     <div style="display: inline-block; float: left; width: 100%;"><hr></div>
@@ -18,30 +31,19 @@
             <div class="col-lg-8">
                 <div class="box-element product-detail">
                     <div style="width: 100%;">
-                      {% if profile %}
-                        <div>
-                            <h4>Adres:</h4>
-                            <strong>Ulica: </strong>{{ profile.street }} {{ profile.number }}<br>
-                            <strong>Kod:</strong>{{ profile.post_code }}<br> <strong>Miejscowość: </strong>{{ profile.city }}<br>
-                            <strong>Tel: </strong> {{ profile.phone_number }}<br><br><hr>
-                        </div>
-                        <div>
-                            <strong>Dodatkowe informacje:</strong><br><br>
-
-                                {{ profile.info }}
-                        </div>
-                        {% else %}
                         <div>
                             <h4>Nie masz jeszcze uzupełnionego profilu.</h4>
                             <h6>Uzupełnij Profil aby zapamiętać adres dostawy. </h6><br>
-                            {% include 'store/form.html' %}
+                            <a class="btn btn-success" href="{% url 'profile_create' %}">Uzupełnij Profil</a>
                         </div>
-                        {% endif %}
+
+
+
 
                     </div>
                 </div>
             </div>
-      </div>
+      </div></form>
     </div>
   </div>
 </div>
