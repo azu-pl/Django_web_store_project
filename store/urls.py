@@ -26,4 +26,5 @@ urlpatterns = [
     path('profile/', ProfileView.as_view(), name='profile'),
     path('profile/create/', ProfileCreateView.as_view(), name='profile_create'),
     path('comment/<int:pk>/add/', CommentCreateView.as_view(), name='add_comment'),
+    path('update_item/', views.updateItem, name='update_item'),
 ]

@@ -15,7 +15,7 @@
                     <h4 style="display: inline-block; float: right">{{i.price}} zł</h4><br>
                     <hr>
                     <a class="btn btn-outline-success" href="{% url 'products_detail' i.id %}">Szczegóły</a>
-                    <button data-product="{{ product.pk }}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Do Koszyka</button>
+                    <button data-product={{i.id}} data-action="add" class="btn btn-outline-secondary add-btn update-cart">Do Koszyka</button>
 
                 </div>
             </div>

@@ -197,7 +197,7 @@ a.user-link:hover, a.user-link:active {
 
 /* Footer section */
 #page-container {
-  position: relative;
+  position: absolute;
   min-height: 100vh;
 }
 
