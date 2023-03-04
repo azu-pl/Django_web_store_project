@@ -28,6 +28,7 @@ urlpatterns = [
     path('profile/', ProfileView.as_view(), name='profile'),
     path('profile/create/', ProfileCreateView.as_view(), name='profile_create'),
     path('comment/<int:pk>/add/', CommentCreateView.as_view(), name='add_comment'),
+    path('update_item/', views.updateItem, name='update_item'),
     path('comment/<int:pk>/edit/', CommentUpdateView.as_view(), name='edit_comment'),
     path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='delete_comment'),
     path('comment_product/<int:pk>/edit/', CommentProductUpdateView.as_view(), name='edit_product_comment'),

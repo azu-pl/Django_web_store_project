@@ -10,23 +10,67 @@ from django.contrib.auth.models import User
 from store.forms import CreateUserProfileForm, RegisterUserForm, CreateCommentForm, ProfileUpdateForm, UserUpdateForm
 from django.views.generic import CreateView, TemplateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
+from django.http import JsonResponse
+import json
 
 
 class BaseStoreView(TemplateView):
     template_name = "store/base.html"
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        if self.request.user.is_authenticated:
+            profile = self.request.user.profile
+            order, created = Order.objects.get_or_create(profile=profile, complete=False)
+            items = order.orderitem_set.all()
+            cartItems = order.get_cart_items
+        else:
+            items = []
+            order = {'get_cart_total': 0, 'get_cart_items': 0}
+            cartItems = order['get_cart_items']
+
         context['categories'] = Category.objects.all()
+        context['items'] = items
+        context['order'] = order
+        context['cartItems'] = cartItems
+
         return context
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['categories'] = Category.objects.all()
+    #     return context
+
 
 class BaseDetailView(DetailView):
     template_name = "store/base.html"
 
-    def get_context_data(self, **kwargs):
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['categories'] = Category.objects.all()
+    #     return context
+
+    def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        if self.request.user.is_authenticated:
+            profile = self.request.user.profile
+            order, created = Order.objects.get_or_create(profile=profile, complete=False)
+            items = order.orderitem_set.all()
+            cartItems = order.get_cart_items
+        else:
+            items = []
+            order = {'get_cart_total': 0, 'get_cart_items': 0}
+            cartItems = order['get_cart_items']
+
         context['categories'] = Category.objects.all()
+        context['items'] = items
+        context['order'] = order
+        context['cartItems'] = cartItems
+
         return context
+
 
 class BaseCreateView(CreateView):
     def get_context_data(self, **kwargs):
@@ -38,43 +82,106 @@ class BaseCreateView(CreateView):
 class StoreMainView(BaseStoreView):
     template_name = 'store/store.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['products'] = Product.objects.all()
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['products'] = Product.objects.all()
+    #     return context
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if self.request.user.is_authenticated:
+            profile = self.request.user.profile
+            order, created = Order.objects.get_or_create(profile=profile, complete=False)
+            items = order.orderitem_set.all()
+            cartItems = order.get_cart_items
+        else:
+            items = []
+            order = {'get_cart_total': 0, 'get_cart_items': 0}
+            cartItems = order['get_cart_items']
+
+        context['products'] = Product.objects.all()
+        context['items'] = items
+        context['order'] = order
+        context['cartItems'] = cartItems
+
+        return context
 
 # def store(request):
 #     products = Product.objects.all()
 #     ctx = {'products': products}
 #     return render(request, 'store/store.html', ctx)
 
+
 class CartView(BaseStoreView):
     template_name = 'store/cart.html'
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        order = Order.objects.get()
-        items = order.orderitem_set.all()
+        if self.request.user.is_authenticated:
+            profile = self.request.user.profile
+            order, created = Order.objects.get_or_create(profile=profile, complete=False)
+            items = order.orderitem_set.all()
+            cartItems = order.get_cart_items
+        else:
+            items = []
+            order = {'get_cart_total': 0, 'get_cart_items': 0}
+            cartItems = order['get_cart_items']
 
         context['items'] = items
         context['order'] = order
+        context['cartItems'] = cartItems
+
         return context
 
 
 class CheckoutView(BaseStoreView):
     template_name = 'store/checkout.html'
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        order = Order.objects.get()
-        items = order.orderitem_set.all()
+        if self.request.user.is_authenticated:
+            profile = self.request.user.profile
+            order, created = Order.objects.get_or_create(profile=profile, complete=False)
+            items = order.orderitem_set.all()
+        else:
+            items = []
+            order = {'get_cart_total': 0, 'get_cart_items': 0}
 
         context['items'] = items
         context['order'] = order
+
         return context
+
+
+def updateItem(request):
+    # data = json.loads(request.data)
+    data = json.loads(request.body.decode("utf-8"))
+    productId = data['productId']
+    action = data['action']
+
+    print('action:', action)
+    print('productId:', productId)
+
+    profile = request.user.profile
+    product = Product.objects.get(id=productId)
+    order, created = Order.objects.get_or_create(profile=profile, complete=False)
+
+    orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
+
+    if action == 'add':
+        orderItem.quantity = (orderItem.quantity +1)
+    elif action == 'remove':
+        orderItem.quantity = (orderItem.quantity -1)
+
+    orderItem.save()
+
+    if orderItem.quantity <= 0:
+        orderItem.delete()
+
+    return JsonResponse('Produkt dodany do koszyka!', safe=False)
 
 
 # def cart(request):
