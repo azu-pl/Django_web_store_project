@@ -8,7 +8,7 @@ from django.contrib.auth import login, logout, authenticate
 from store.models import Profile, Category, Product, Subcategory, Comment, OrderItem, Order
 from django.contrib.auth.models import User
 from store.forms import CreateUserProfileForm, RegisterUserForm, CreateCommentForm, ProfileUpdateForm, UserUpdateForm
-from django.views.generic import CreateView, TemplateView, DetailView, UpdateView, DeleteView
+from django.views.generic import CreateView, TemplateView, DetailView, UpdateView, DeleteView, ListView
 from django.urls import reverse_lazy, reverse
 from django.http import JsonResponse
 import json
@@ -474,3 +474,24 @@ class UserDeleteView(CommentDeleteView):
     template_name = 'store/confirm_delete.html'
 
 
+# class SearchStoreList(ListView):
+#     model = Product
+#     template_name = 'store/store.html'
+#
+#     def get_queryset(self):
+#         q_s = self.request.GET.get('q_s')
+#         if q_s:
+#             object_list = self.model.objects.filter(name__icontains=q_s)
+#         else:
+#             object_list = self.model.objects.all()
+#         return object_list.order_by('-name')
+
+def search_product(request):
+    if request.method == 'POST':
+        searched = request.POST['searched']
+        products = Product.objects.filter(name__contains=searched)
+
+        return render(request, 'store/search_product.html', {'searched': searched, 'products': products})
+
+    else:
+        return render(request, 'store/store.html', {})
