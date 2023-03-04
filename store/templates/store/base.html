@@ -53,6 +53,7 @@
 			  <li class="nav-item active">
 				<a class="nav-link" href="{% url 'store' %}"> Strona główna <span class="sr-only"></span></a>
 			  </li>
+
 			  {% for category in categories %}
 			  <li class="nav-item dropdown">
 				  <a class="nav-link dropdown-toggle" href="{% url 'categories_detail_list' category.id %}" id="navbarDropdown">
