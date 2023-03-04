@@ -1,0 +1,52 @@
+{% extends 'store/base.html' %}
+{% block title %} Profil {{ user.username }} {% endblock %}
+{% block content %}
+<h1>Profil klienta: {{ user.username }}</h1>
+<div>
+  <div class="row">
+    <div class="col-lg-12">
+        <form method="post">
+            {% csrf_token %}
+      <div class="row">
+            <div class="col-lg-4">
+                <div class="box-element product-detail">
+                    <div style="display: inline-block; float: left; width: 100%;">
+                        <div>
+                            <table>{{ user_form }}</table>
+
+<!--                                        <input type="submit" value="Submit" class="btn btn-primary">-->
+
+                        </div>
+
+                    </div>
+                    <div style="display: inline-block; float: left; width: 100%;"><hr></div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="box-element product-detail">
+                    <div style="width: 100%;">
+                        <table>{{ profile_form }}
+                            <tr></tr>
+                            <tr>
+                                <td><input type="submit" value="Uaktualnij" class="btn btn-primary"></td>
+                                <td>{% if cancel %} <a class="btn btn-success" href="{{ cancel }}">Anuluj </a>{% endif %}</td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+{% endblock content%}
+
+{% block orders %}
+    {% include 'store/user_orders.html' %}
+{% endblock orders %}
+{% block comment %}
+    {% include 'store/user_comments.html' %}
+{% endblock comment %}

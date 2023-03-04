@@ -1,60 +1,51 @@
-  <div class="container comment">
+<div class="container comment">
     <div class="row">
         <div class="col-lg-12">
-            <div class="box-element product-comment">
+            <div class="box-element product-order-box">
+                <div>
                 <h4 style="margin-top:4px">Twoje zamówienia:</h4>
-            </div>
-        </div>
-    </div>
-  </div>
-    {% if profile %}
-    {% if not profile.orders.all %}
-    <div class="container comment">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="box-element product-comment">
+                <hr>
+                </div>
+{% if profile %}
+{% if not profile.orders.all %}
+                <div>
                     <h4 style="margin-top:4px">Brak historii zamówień.</h4>
                 </div>
             </div>
         </div>
     </div>
-    {% else %}
-
-        {% for order in profile.orders.all %}
-    <div class="container comment"><div class="row">
-        <div class="col-lg-12">
-            <div class="box-element product-comment">
-                <div style="margin-bottom: -1rem;">
-                <div style="display: inline-block; float: left;">
-                    <strong>Data utworzenia:</strong> {{ order.date_ordered|date:"d M Y" }}
-                    <strong>Produkt:</strong>  {{ order.complete }}
-                </div>
+</div>
+{% else %}
+{% for order in profile.orders.all %}
+                <div class="box-element product-order">
+                    <div style="display: inline-block; float: left; width: 80%; margin-top: 5px;">
+                        <strong>Nr zamówienia:</strong> {{ order.transaction_id }}
+                        <strong>Data złożenia:</strong> {{ order.date_ordered|date:"d M Y" }}
+                        <strong>Status:</strong>
+                        {% if order.complete %} Zrealizowane
+                        {% else %}W trakcie..
+                        {% endif %}
+                        <hr>
+                    </div>
                     <div style="display: inline-block; float: right;">
-
-                    </div>
-                </div>
-                <br>
-                <div><hr>
-                    <div style="margin-bottom: 1rem; margin-top: -1rem;">
-                        <span style="font-size:1.5rem;">{{comment.title }}</span>
+                        <a class="btn btn-outline-dark" href="#" style="display: inline-block; float: right;">Szczegóły</a>
                     </div>
 
                 </div>
-
-
+{% endfor %}
             </div>
         </div>
     </div>
-  </div>
-        {% endfor %}
+</div>
+
     {% endif %}
 {% else %}
-  <div class="container comment">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="box-element product-comment">
-                <h4 style="margin-top:4px">Uzupełnij Profil aby móc składać zamówienia  </h4>
+
+                <div>
+                    <h4 style="margin-top:4px">Uzupełnij Profil aby móc składać zamówienia  </h4>
+                </div>
             </div>
         </div>
-    </div></div>
+    </div>
+</div>
 {% endif %}

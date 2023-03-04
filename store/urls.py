@@ -1,7 +1,9 @@
 from django.urls import path
 from . import views
+from django.contrib.auth import views as auth_views
 from .views import ProfileCreateView, HelloView, ProfileView, StoreMainView, CartView, ProductDetailView, SignUp, \
-    CheckoutView, CategoryDetailView, SubcategoryDetailView, CommentCreateView
+    CheckoutView, CategoryDetailView, SubcategoryDetailView, CommentCreateView, CommentUpdateView, CommentDeleteView, \
+    CommentProductDeleteView, CommentProductUpdateView, UserPasswordChangeView, UserDeleteView
 
 urlpatterns = [
     # path('', views.store, name='store'),
@@ -27,4 +29,14 @@ urlpatterns = [
     path('profile/create/', ProfileCreateView.as_view(), name='profile_create'),
     path('comment/<int:pk>/add/', CommentCreateView.as_view(), name='add_comment'),
     path('update_item/', views.updateItem, name='update_item'),
+    path('comment/<int:pk>/edit/', CommentUpdateView.as_view(), name='edit_comment'),
+    path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='delete_comment'),
+    path('comment_product/<int:pk>/edit/', CommentProductUpdateView.as_view(), name='edit_product_comment'),
+    path('comment_product/<int:pk>/delete/', CommentProductDeleteView.as_view(), name='delete_product_comment'),
+    # path('profile/update/', UserUpdateProfileView.as_view(), name='update_profile'),
+    path('profile/update/', views.user_update_profile, name='update_profile'),
+    path('profile/user/update/', views.user_update, name='update_user'),
+    # path('password', auth_views.PasswordChangeView.as_view()),
+    path('profile/password/', UserPasswordChangeView.as_view(), name='change_password'),
+    path('profile/delete/<int:pk>/', UserDeleteView.as_view(), name='delete_user'),
 ]

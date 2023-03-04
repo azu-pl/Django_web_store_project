@@ -21,6 +21,7 @@
                     <div style="display: inline-block; float: left; height: 6rem; width: 100%;">
                         <h1><strong> {{product.name}} </strong></h1>
                     </div>
+
                     <div style="display: inline-block; float: right">
                         <strong>
                             <span style="font-size:1.9rem;">Ocena:  {{product.get_total_score}}/</span>
@@ -69,17 +70,33 @@
     <div class="col-lg-12">
         <div class="box-element product-comment">
             <div style="margin-bottom: -1rem;">
-            <div style="display: inline-block; float: left;">
-                <strong>Data utworzenia:</strong> {{ comment.creation_datetime|date:"d M Y" }}
-                <strong>Autor:</strong> @{{ comment.creator }}
-            </div>
+                <div style="display: inline-block; float: left;">
+                    <strong>Data utworzenia:</strong> {{ comment.creation_datetime|date:"d M Y" }}
+                    <strong>Autor:</strong> @{{ comment.creator }}
+                </div>
                 <div style="display: inline-block; float: right;">
                     <strong>Ocena:</strong> {{ comment.score }}/5
                 </div>
             </div>
             <br>
-                <div><hr><div style="margin-bottom: 1rem; margin-top: -1rem;"> <span style="font-size:1.5rem;">{{comment.title }}</span></div>
-                <div class="comment-text">{{comment.comment }}</div>
+            <div style="border: solid red 0px;"><hr>
+                <div style="border: solid red 0px; display: inline-block; width: 100%;">
+                    <div style="border: solid black 0px; display: block; float: left; margin-bottom: 0rem; margin-top: -1rem;"> <span style="font-size:1.5rem;">{{comment.title }}</span>
+                    </div>
+                    <div style="border: solid black 0px; display: block; float: right; margin-top: -1rem;">
+                        {% if user.is_authenticated %}
+                            {% if user == comment.creator %}
+<!--                               <a class="btn btn-outline-dark" href="url 'edit_comment' comment.pk " style="">Edytuj</a>-->
+<!--                               <a class="btn btn-outline-dark" href=" url 'delete_comment' comment.pk " style="">Usuń</a>-->
+                        <a class="btn btn-outline-dark" href="{% url 'edit_product_comment' comment.pk %}" style="">Edytuj</a>
+                        <a class="btn btn-outline-dark" href="{% url 'delete_product_comment' comment.pk %}" style="">Usuń</a>
+                        {%endif%} {%endif%}
+                    </div>
+                </div>
+                <div>
+                    <div class="comment-text" style="border: solid black 0px; display: block;">{{comment.comment }}
+                    </div>
+                </div>
             </div>
 
 

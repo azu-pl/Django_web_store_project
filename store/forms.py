@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from .models import Profile, Comment
 
@@ -33,6 +33,7 @@ class CreateUserProfileForm(forms.ModelForm):
 
 class CreateCommentForm(forms.ModelForm):
     score = forms.IntegerField(min_value=1, max_value=5, label="Ocena")
+
     class Meta:
         model = Comment
         # fields = '__all__'
@@ -41,3 +42,19 @@ class CreateCommentForm(forms.ModelForm):
         labels = {'title': "Tytuł", 'comment': "Treść"}
 
 
+class UserUpdateForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email']
+        # exclude = ['password1', 'password2', 'password']
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    # first_name = forms.CharField(max_length=32)
+    # last_name = forms.CharField(max_length=32)
+    # email = forms.EmailField(required=True)
+
+    class Meta:
+        model = Profile
+        fields = ['street', 'number', 'post_code', 'city',
+                  'phone_number', 'info']
