@@ -1,12 +1,13 @@
-from django.contrib.auth.forms import AuthenticationForm, UsernameField
+from django.contrib.auth.forms import AuthenticationForm, UsernameField, PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import PasswordChangeView
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.base import TemplateResponseMixin, ContextMixin, View
 from django.contrib.auth import login, logout, authenticate
 from store.models import Profile, Category, Product, Subcategory, Comment, OrderItem, Order
 from django.contrib.auth.models import User
-from store.forms import CreateUserProfileForm, RegisterUserForm, CreateCommentForm
+from store.forms import CreateUserProfileForm, RegisterUserForm, CreateCommentForm, ProfileUpdateForm, UserUpdateForm
 from django.views.generic import CreateView, TemplateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 
@@ -278,3 +279,91 @@ class CommentProductDeleteView(CommentDeleteView):
 
     def get_success_url(self):
         return reverse('products_detail', kwargs={'pk': self.object.product.pk})
+
+
+# class UserUpdateProfileView(LoginRequiredMixin, UpdateView):
+#     template_name = 'store/profile.html'
+#     context_object_name = 'user'
+#     queryset = Profile.objects.all()
+#     form_class = ProfileUpdateForm
+#     success_url = reverse_lazy('profile')
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(UserUpdateProfileView, self).get_context_data(**kwargs)
+#         user = self.request.user
+#         context['profile_form'] = ProfileUpdateForm(instance=self.request.user.pk,
+#                                                     initial={'first_name': user.first_name, 'last_name': user.last_name,
+#                                                              'email': user.email})
+#         return context
+#
+#     def form_valid(self, form):
+#         profile = form.save(commit=False)
+#         user = profile.user
+#         user.last_name = form.cleaned_data['last_name']
+#         user.first_name = form.cleaned_data['first_name']
+#         user.email = form.cleaned_data['email']
+#         user.save()
+#         profile.save()
+#         # return HttpResponseRedirect(reverse('profile', kwargs={'pk': self.get_object().id}))
+#         return super().form_valid(form)
+
+def user_update_profile(request):
+    if request.method == 'POST':
+        user_form = UserUpdateForm(request.POST, instance=request.user)
+        profile_form = ProfileUpdateForm(request.POST, instance=request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            return redirect('profile')
+
+    else:
+        user_form = UserUpdateForm(instance=request.user)
+        profile_form = ProfileUpdateForm(instance=request.user.profile)
+
+    context = {
+        'user_form': user_form,
+        'profile_form': profile_form,
+        'categories': Category.objects.all(),
+        'cancel': request.META.get('HTTP_REFERER')
+    }
+
+    return render(request, 'store/profile_update.html', context)
+
+
+def user_update(request):
+    if request.method == 'POST':
+        user_form = UserUpdateForm(request.POST, instance=request.user)
+        if user_form.is_valid():
+            user_form.save()
+            return redirect('profile')
+
+    else:
+        user_form = UserUpdateForm(instance=request.user)
+
+    context = {
+        'user_form': user_form,
+        'categories': Category.objects.all(),
+        'cancel': request.META.get('HTTP_REFERER')
+    }
+
+    return render(request, 'store/user_update.html', context)
+
+
+class UserPasswordChangeView(PasswordChangeView):
+    from_class = PasswordChangeForm
+    success_url = reverse_lazy('profile')
+    template_name = 'registration/password_change.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        context['cancel'] = self.request.META.get('HTTP_REFERER')
+        return context
+
+
+class UserDeleteView(CommentDeleteView):
+    model = User
+    success_url = reverse_lazy('store')
+    template_name = 'store/confirm_delete.html'
+
+

@@ -1,15 +1,28 @@
 <h4>Dane klienta:</h4>
-<table>
-<tr>
-    <td style="width: 100px"><strong> Imię:</strong></td>
-    <td><span>{{ user.first_name }}</span></td>
-</tr>
-<tr>
-    <td style="width: 60px"><strong> Nazwisko:</strong></td>
-    <td><span>{{ user.last_name }}</span></td>
-</tr>
-<tr>
-    <td style="width: 60px"><strong> E-mail:</strong></td>
-    <td><span>{{ user.email }}</span></td>
-</tr>
-</table>
+<div>
+    <table style="width: 100%;">
+        <tr>
+            <td style="width: 40%"><strong> Imię:</strong></td>
+            <td><span>{{ user.first_name }}</span></td>
+        </tr>
+        <tr>
+            <td style="width: 60px"><strong> Nazwisko:</strong></td>
+            <td><span>{{ user.last_name }}</span></td>
+        </tr>
+        <tr>
+            <td style="width: 60px"><strong> E-mail:</strong></td>
+            <td><span>{{ user.email }}</span></td>
+        </tr>
+    </table>
+</div>
+<hr>
+<strong>Zarządzaj kontem:</strong><br><br>
+<div style="float: right; margin-top: 0rem;">
+    {% if profile %}
+    <a class="btn btn-outline-dark" href="{% url 'update_profile' %}" style="">Edytuj</a>
+    {% else %}
+    <a class="btn btn-outline-dark" href="{% url 'update_user' %}" style="">Edytuj</a>
+    {% endif %}
+    <a class="btn btn-outline-dark" href="{% url 'change_password' %}" style="">Zmień Hasło</a>
+    <a class="btn btn-danger" href="{% url 'delete_user' user.id %}" style="">Usuń</a>
+</div>

@@ -3,7 +3,11 @@
 {% block content %}
 <div>
     <div style="align-content: center;">
+        {% if object.product %}
         <h4 >UWAGA !! Chcesz skasować komentarz dla produktu: {{object.product.name}}</h4>
+        {% else %}
+        <h4 >UWAGA !! Bezpowrotnie usuniesz swoje konto: {{user}}</h4>
+        {% endif %}
     </div>
     <div style="display: inline-block; width: 420px; padding: 19px;">
         <div style="display: inline-block; float: right;">
