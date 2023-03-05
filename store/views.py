@@ -11,6 +11,7 @@ from store.forms import CreateUserProfileForm, RegisterUserForm, CreateCommentFo
 from django.views.generic import CreateView, TemplateView, DetailView, UpdateView, DeleteView, ListView
 from django.urls import reverse_lazy, reverse
 from django.http import JsonResponse
+from django.db.models import Q
 import json
 
 
@@ -468,10 +469,16 @@ class UserPasswordChangeView(PasswordChangeView):
         return context
 
 
-class UserDeleteView(CommentDeleteView):
+class UserDeleteView(LoginRequiredMixin, CommentDeleteView):
     model = User
     success_url = reverse_lazy('store')
     template_name = 'store/confirm_delete.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        print(kwargs)
+        if not request.user.is_authenticated or request.user.pk != self.kwargs['pk']:
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
 
 
 # class SearchStoreList(ListView):
@@ -489,9 +496,15 @@ class UserDeleteView(CommentDeleteView):
 def search_product(request):
     if request.method == 'POST':
         searched = request.POST['searched']
-        products = Product.objects.filter(name__contains=searched)
+        products = Product.objects.filter(Q(name__icontains=searched) | Q(description__icontains=searched))
 
-        return render(request, 'store/search_product.html', {'searched': searched, 'products': products})
+        context = {
+            'searched': searched,
+            'products': products,
+            'categories': Category.objects.all(),
+        }
+
+        return render(request, 'store/search_product.html', context)
 
     else:
-        return render(request, 'store/store.html', {})
+        return render(request, 'store/store.html')
