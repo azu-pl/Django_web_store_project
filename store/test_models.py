@@ -4,23 +4,22 @@ from store.models import Product, Comment, Subcategory, Category, Profile, Order
 class TestModel(TestCase):
 
     def setUp(self):
-        # self.profile = Profile.objects.create(
-        #     user_id=10,
-        #     street='1.avenue',
-        #     number='5',
-        #     post_code='00-000',
-        #     city='N.Y',
-        #     phone_number=2222,
-        #     info='')
+        self.profile = Profile.objects.create(
+            street='1.avenue',
+            number='5',
+            post_code='00-000',
+            city='N.Y',
+            phone_number=2222,
+            info='')
 
-        # self.order = Order.objects.create(
-        #     profile=self.profile,
-        #     complete=True)
+        self.order = Order.objects.create(
+            profile=self.profile,
+            complete=True)
 
-        # self.orderitem = OrderItem.objects.create(
-        #     product=self.product,
-        #     order=self.order,
-        #     quantity = 8)
+        self.orderitem = OrderItem.objects.create(
+            product=self.product,
+            order=self.order,
+            quantity = 8)
 
         self.category = Category.objects.create(
             name='TV')
@@ -44,8 +43,8 @@ class TestModel(TestCase):
     def test_score_validation(self):
         self.assertEqual(self.product.get_total_score, 5)
 
-    # def test_orderitem_get_total(self):
-    #     self.assertEqual(self.orderitem.get_total, 8000)
+    def test_orderitem_get_total(self):
+        self.assertEqual(self.orderitem.get_total, 8000)
 
 
 
