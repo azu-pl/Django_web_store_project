@@ -242,18 +242,6 @@ class SubcategoryDetailView(BaseStoreView):
         return context
 
 
-def categories_detail_view(request, id):
-    pass
-
-
-def subcategories_detail_view(request, id):
-    pass
-
-
-def subcategories_list_view(request):
-    pass
-
-
 class SignUp(BaseCreateView):
     form_class = RegisterUserForm
     success_url = reverse_lazy('store')
@@ -508,3 +496,9 @@ def search_product(request):
 
     else:
         return render(request, 'store/store.html')
+
+
+class OrderDetailView(BaseDetailView):
+    model = Order
+    template_name = 'store/order_detail.html'
+

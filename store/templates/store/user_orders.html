@@ -17,6 +17,7 @@
 </div>
 {% else %}
 {% for order in profile.orders.all %}
+    {% if order.get_cart_total > 0 %}
                 <div class="box-element product-order">
                     <div style="display: inline-block; float: left; width: 80%; margin-top: 5px;">
                         <strong>Nr zamówienia:</strong> {{ order.transaction_id }}
@@ -28,10 +29,11 @@
                         <hr>
                     </div>
                     <div style="display: inline-block; float: right;">
-                        <a class="btn btn-outline-dark" href="#" style="display: inline-block; float: right;">Szczegóły</a>
+                        <a class="btn btn-outline-dark" href="{% url 'order_detail_list' order.pk %}" style="display: inline-block; float: right;">Szczegóły</a>
                     </div>
 
                 </div>
+ {% endif %}
 {% endfor %}
             </div>
         </div>
