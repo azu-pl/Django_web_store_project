@@ -8,9 +8,10 @@ from django.contrib.auth import login, logout, authenticate
 from store.models import Profile, Category, Product, Subcategory, Comment, OrderItem, Order
 from django.contrib.auth.models import User
 from store.forms import CreateUserProfileForm, RegisterUserForm, CreateCommentForm, ProfileUpdateForm, UserUpdateForm
-from django.views.generic import CreateView, TemplateView, DetailView, UpdateView, DeleteView
+from django.views.generic import CreateView, TemplateView, DetailView, UpdateView, DeleteView, ListView
 from django.urls import reverse_lazy, reverse
 from django.http import JsonResponse
+from django.db.models import Q
 import json
 
 
@@ -468,9 +469,42 @@ class UserPasswordChangeView(PasswordChangeView):
         return context
 
 
-class UserDeleteView(CommentDeleteView):
+class UserDeleteView(LoginRequiredMixin, CommentDeleteView):
     model = User
     success_url = reverse_lazy('store')
     template_name = 'store/confirm_delete.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        print(kwargs)
+        if not request.user.is_authenticated or request.user.pk != self.kwargs['pk']:
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
 
+
+# class SearchStoreList(ListView):
+#     model = Product
+#     template_name = 'store/store.html'
+#
+#     def get_queryset(self):
+#         q_s = self.request.GET.get('q_s')
+#         if q_s:
+#             object_list = self.model.objects.filter(name__icontains=q_s)
+#         else:
+#             object_list = self.model.objects.all()
+#         return object_list.order_by('-name')
+
+def search_product(request):
+    if request.method == 'POST':
+        searched = request.POST['searched']
+        products = Product.objects.filter(Q(name__icontains=searched) | Q(description__icontains=searched))
+
+        context = {
+            'searched': searched,
+            'products': products,
+            'categories': Category.objects.all(),
+        }
+
+        return render(request, 'store/search_product.html', context)
+
+    else:
+        return render(request, 'store/store.html')

@@ -3,7 +3,7 @@ from . import views
 from django.contrib.auth import views as auth_views
 from .views import ProfileCreateView, HelloView, ProfileView, StoreMainView, CartView, ProductDetailView, SignUp, \
     CheckoutView, CategoryDetailView, SubcategoryDetailView, CommentCreateView, CommentUpdateView, CommentDeleteView, \
-    CommentProductDeleteView, CommentProductUpdateView, UserPasswordChangeView, UserDeleteView
+    CommentProductDeleteView, CommentProductUpdateView, UserPasswordChangeView, UserDeleteView, search_product
 
 urlpatterns = [
     # path('', views.store, name='store'),
@@ -39,4 +39,6 @@ urlpatterns = [
     # path('password', auth_views.PasswordChangeView.as_view()),
     path('profile/password/', UserPasswordChangeView.as_view(), name='change_password'),
     path('profile/delete/<int:pk>/', UserDeleteView.as_view(), name='delete_user'),
+    # path('search/', SearchStoreList.as_view(), name='search'),
+    path('search/', views.search_product, name='search'),
 ]
