@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from .models import Profile, Comment
@@ -40,6 +41,21 @@ class CreateCommentForm(forms.ModelForm):
         exclude = ['creator', 'product',]
         # widgets = {'score': forms.IntegerField(min_value=1, max_value=5),}
         labels = {'title': "Tytuł", 'comment': "Treść"}
+
+    # def clean_score(self):
+    #     submitted_score = self.cleaned_data['score']
+    #     if not (1 <= submitted_score <= 5):
+    #         ValidationError(
+    #             "Niepoprawna wartość oceny."
+    #         )
+
+    # def clean(self):
+    #     cleand_data = super().clean()
+    #     # if cleand_data['score'] == 3:
+    #
+    #     raise ValidationError(
+    #             "Niepoprawna wartość oceny."
+    #         )
 
 
 class UserUpdateForm(UserChangeForm):
