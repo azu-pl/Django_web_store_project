@@ -2,15 +2,14 @@
 {% load static %}
 {% block content %}
     <div class="row">
-
-    {% if products.exists %}
+{% if searched %}
         {% for i in products %}
             <div class="col-lg-4">
                 <a class="" href="{% url 'products_detail' i.id %}">
                 <img class="thumbnail" src="{{ i.thumbnail.url }}"></a>
                 <div class="box-element product">
                     <!-- <h6>{{i.id}}</h6> -->
-                    <h5><strong> {{i.name|truncatechars:28}} </strong></h5><br>
+                    <h5><strong> {{i.name|truncatechars:30}} </strong></h5><br>
                     <div class="product-descr-list"><h6>{{ i.description|truncatechars:220 }}</h6></div><br>
                     <h4 style="display: inline-block; float: right">{{i.price}} zł</h4><br>
                     <hr>
