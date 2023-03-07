@@ -22,8 +22,8 @@ class BaseStoreView(TemplateView):
         context = super().get_context_data(**kwargs)
 
         if self.request.user.is_authenticated:
-            profile = self.request.user.profile
-            order, created = Order.objects.get_or_create(profile=profile, complete=False)
+            user = self.request.user
+            order, created = Order.objects.get_or_create(user=user, complete=False)
             items = order.orderitem_set.all()
             cartItems = order.get_cart_items
         else:
@@ -56,8 +56,8 @@ class BaseDetailView(DetailView):
         context = super().get_context_data(**kwargs)
 
         if self.request.user.is_authenticated:
-            profile = self.request.user.profile
-            order, created = Order.objects.get_or_create(profile=profile, complete=False)
+            user = self.request.user
+            order, created = Order.objects.get_or_create(user=user, complete=False)
             items = order.orderitem_set.all()
             cartItems = order.get_cart_items
         else:
@@ -76,7 +76,21 @@ class BaseDetailView(DetailView):
 class BaseCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        if self.request.user.is_authenticated:
+            user = self.request.user
+            order, created = Order.objects.get_or_create(user=user, complete=False)
+            items = order.orderitem_set.all()
+            cartItems = order.get_cart_items
+        else:
+            items = []
+            order = {'get_cart_total': 0, 'get_cart_items': 0}
+            cartItems = order['get_cart_items']
+
         context['categories'] = Category.objects.all()
+        context['items'] = items
+        context['order'] = order
+        context['cartItems'] = cartItems
         return context
 
 
@@ -92,8 +106,8 @@ class StoreMainView(BaseStoreView):
         context = super().get_context_data(**kwargs)
 
         if self.request.user.is_authenticated:
-            profile = self.request.user.profile
-            order, created = Order.objects.get_or_create(profile=profile, complete=False)
+            user = self.request.user
+            order, created = Order.objects.get_or_create(user=user, complete=False)
             items = order.orderitem_set.all()
             cartItems = order.get_cart_items
         else:
@@ -121,8 +135,8 @@ class CartView(BaseStoreView):
         context = super().get_context_data(**kwargs)
 
         if self.request.user.is_authenticated:
-            profile = self.request.user.profile
-            order, created = Order.objects.get_or_create(profile=profile, complete=False)
+            user = self.request.user
+            order, created = Order.objects.get_or_create(user=user, complete=False)
             items = order.orderitem_set.all()
             cartItems = order.get_cart_items
         else:
@@ -144,8 +158,8 @@ class CheckoutView(BaseStoreView):
         context = super().get_context_data(**kwargs)
 
         if self.request.user.is_authenticated:
-            profile = self.request.user.profile
-            order, created = Order.objects.get_or_create(profile=profile, complete=False)
+            user = self.request.user
+            order, created = Order.objects.get_or_create(user=user, complete=False)
             items = order.orderitem_set.all()
         else:
             items = []
@@ -166,9 +180,9 @@ def updateItem(request):
     print('action:', action)
     print('productId:', productId)
 
-    profile = request.user.profile
+    user = request.user
     product = Product.objects.get(id=productId)
-    order, created = Order.objects.get_or_create(profile=profile, complete=False)
+    order, created = Order.objects.get_or_create(user=user, complete=False)
 
     orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
 

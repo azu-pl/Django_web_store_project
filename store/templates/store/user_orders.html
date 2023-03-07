@@ -6,8 +6,8 @@
                 <h4 style="margin-top:4px">Twoje zamówienia:</h4>
                 <hr>
                 </div>
-{% if profile %}
-{% if not profile.orders.all %}
+
+{% if user.orders.count == 1 and order.get_cart_items == 0 %}
                 <div>
                     <h4 style="margin-top:4px">Brak historii zamówień.</h4>
                 </div>
@@ -16,7 +16,7 @@
     </div>
 </div>
 {% else %}
-{% for order in profile.orders.all %}
+{% for order in user.orders.all %}
     {% if order.get_cart_total > 0 %}
                 <div class="box-element product-order">
                     <div style="display: inline-block; float: left; width: 80%; margin-top: 5px;">
@@ -41,13 +41,3 @@
 </div>
 
     {% endif %}
-{% else %}
-
-                <div>
-                    <h4 style="margin-top:4px">Uzupełnij Profil aby móc składać zamówienia  </h4>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% endif %}

@@ -101,7 +101,7 @@ class Comment(models.Model):
 
 
 class Order(models.Model):
-    profile = models.ForeignKey(Profile, related_name='orders', on_delete=models.SET_NULL, blank=True, null=True)
+    user = models.ForeignKey('auth.user', related_name='orders', on_delete=models.SET_NULL, blank=True, null=True)
     date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False, null=True, blank=False)
     transaction_id = models.CharField(max_length=200, null=True)
